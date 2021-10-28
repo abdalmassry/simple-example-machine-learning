@@ -4,169 +4,93 @@
 From google playstore dataset, I made this project for Exploratory Data Analysis and
 made some prediction model.
 ### Import libraries
-[![N|Solid](1.png)](images/1.png)
+![Import libraries](images/1.png)
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+### Data Collection
+![Data Collection](images/2.png)
 
-Dillinger is a cloud-enabled, mobile-ready, offline-storage compatible,
-AngularJS-powered HTML5 Markdown editor.
+Data collection is the process of gathering and measuring data, information or any variables of interest in a standardized and established manner that enables the collector to answer or test hypothesis and evaluate outcomes of the particular collection
 
-- Type some Markdown on the left
-- See HTML in the right
-- ✨Magic ✨
+### Column List
 
-## Features
+- App: Application name
+- Category: Category the app belongs to
+- Rating: Overall user rating of the app (as when scraped)
+- Reviews: Number of user reviews for the app (as when scraped)
+- Size: Size of the app (as when scraped)
+- Installs: Number of user downloads/installs for the app (as when scraped)
+- Type: Paid or Free
+- Price: Price of the app (as when scraped)
+- Content Rating: Age group the app is targeted at - Children / Mature 21+ / Adult
+- Genres: An app can belong to multiple genres (apart from its main category). For
+eg, a musical family game will belong to Music, Game, Family genres.
+- Last Updated: Date when the app was last updated on Play Store.
+- Current Ver: Current version of the app available on Play Store.
+- Android Ver: Min required Android version (as when scraped)
 
-- Import a HTML file and watch it magically convert to Markdown
-- Drag and drop images (requires your Dropbox account be linked)
-- Import and save files from GitHub, Dropbox, Google Drive and One Drive
-- Drag and drop markdown and HTML files into Dillinger
-- Export documents as Markdown, HTML and PDF
+![Column List](images/4.png)
 
-Markdown is a lightweight markup language based on the formatting conventions
-that people naturally use in email.
-As [John Gruber] writes on the [Markdown site][df1]
+Looks like there are missing values in "Rating", "Type", "Content Rating" and "Android Ver". But most of these missing values in Rating column.
+![Column List](images/5.png)
 
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
+### Data Cleaning and Creating Dummy Variables
+There are two strategies to handle missing data, either removing records with these missing values or replacing missing values with a specific value like (mean, median or mode) value of the column
+![Data Cleaning](images/6.png)
+![Creating Dummy Variables](images/7.png)
 
-This text you see here is *actually- written in Markdown! To get a feel
-for Markdown's syntax, type some text into the left window and
-watch the results in the right.
+### Categorical Data Encoding
+Many machine learning algorithms can support categorical values without further manipulation but there are many more algorithms that do not. We need to make all data ready for the model, so we will convert categorical variables (variables that stored as text values) into numerical variables.
+![Categorical Data Encoding](images/8.png)
+![Categorical Data Encoding](images/9.png)
 
-## Tech
+### Feature selection
+In this section shows how k-nearest neighbors and random forests can be used to predict app ratings based on the other matrices. First, the dataset has to separate into dependent and independent variables (or features and labels). Then those variables have to split into a training and test set
+![Categorical Data Encoding](images/10.png)
+During training stage we give the model both the features and the labels so it can learn to classify points based on the features
 
-Dillinger uses a number of open source projects to work properly:
+### Training & Testing of Model
 
-- [AngularJS] - HTML enhanced for web apps!
-- [Ace Editor] - awesome web-based text editor
-- [markdown-it] - Markdown parser done right. Fast and easy to extend.
-- [Twitter Bootstrap] - great UI boilerplate for modern web apps
-- [node.js] - evented I/O for the backend
-- [Express] - fast node.js network app framework [@tjholowaychuk]
-- [Gulp] - the streaming build system
-- [Breakdance](https://breakdance.github.io/breakdance/) - HTML
-to Markdown converter
-- [jQuery] - duh
+#### Question (1): How we can predict app rating?
+I will use SVM regressor
+    As the name suggest the SVR is an regression algorithm , so we can use SVR for working with continuous Values instead of Classification which is SVM
+    ![SVM regressor](images/11.png)
 
-And of course Dillinger itself is open source with a [public repository][dill]
- on GitHub.
+We can see accuracy for SVM is high to predict app rating and there above example to predict one data row and the predict rate is 4.35
 
-## Installation
+#### Question (2): How we can predict price?
+I will use Random Forest is a classification algorithm consisting of many decisions trees.
+It uses bagging and feature randomness when building each individual tree to try to create an uncorrelated forest of trees whose prediction by committee is more accurate
+than that of any individual tree
+![Random Forest](images/12.png)
 
-Dillinger requires [Node.js](https://nodejs.org/) v10+ to run.
+We can see accuracy for RandomForest is high to predict price and there above example to predict one data row and the predict price is 29.99
 
-Install the dependencies and devDependencies and start the server.
+#### Question (3): Does App size affect downloads?
+![App size](images/13.png)
+We can see here there is a weakening positive relationship to the amount of people willing to download a bigger app. Since the apps get bigger and bigger, more people are willing to download them. Though this graph could hold true to a new theory that more people download apps that are rich in resources and functionality. And these apps just so happen to be bigger in size because of it. Also, nowadays, the size of an app is no longer a concern with the growing memory size of smartphones. And the increase in uncapped connection to the web. Naturally, as the relationship weakens, it proves that there still is a limit to what people are willing to download when it comes to app sizes.
 
-```sh
-cd dillinger
-npm i
-node app
-```
+#### Question (4): Which Category has a highest Reviews?
+![highest Reviews](images/14.png)
 
-For production environments...
+![highest Reviews](images/15.png)
 
-```sh
-npm install --production
-NODE_ENV=production node app
-```
+We can see in above plot the relation between Category and reviews and we can notice we have two category have a highest review are Communication and Social
 
-## Plugins
+#### Question (5): which features are effects on the rating for app?
+![rating](images/16.png)
+We can see in above plot the relation between all features in the dataset, and we can see the features are effects on the rating are (LastUpdated then Type then Genres then Category)
 
-Dillinger is currently extended with the following plugins.
-Instructions on how to use them in your own application are linked below.
+#### Question (6): What is the most common factor between the highly rating apps?
+![common factor](images/17.png)
 
-| Plugin | README |
-| ------ | ------ |
-| Dropbox | [plugins/dropbox/README.md][PlDb] |
-| GitHub | [plugins/github/README.md][PlGh] |
-| Google Drive | [plugins/googledrive/README.md][PlGd] |
-| OneDrive | [plugins/onedrive/README.md][PlOd] |
-| Medium | [plugins/medium/README.md][PlMe] |
-| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |
+#### Question (7): What is the most common factor between the lowlessly rating apps?
+![common factor 2](images/18.png)
 
-## Development
+we can see in above plot the most common factor between the lowessly rating apps is the size
 
-Want to contribute? Great!
-
-Dillinger uses Gulp + Webpack for fast developing.
-Make a change in your file and instantaneously see your updates!
-
-Open your favorite Terminal and run these commands.
-
-First Tab:
-
-```sh
-node app
-```
-
-Second Tab:
-
-```sh
-gulp watch
-```
-
-(optional) Third:
-
-```sh
-karma test
-```
-
-#### Building for source
-
-For production release:
-
-```sh
-gulp build --prod
-```
-
-Generating pre-built zip archives for distribution:
-
-```sh
-gulp build dist --prod
-```
-
-## Docker
-
-Dillinger is very easy to install and deploy in a Docker container.
-
-By default, the Docker will expose port 8080, so change this within the
-Dockerfile if necessary. When ready, simply use the Dockerfile to
-build the image.
-
-```sh
-cd dillinger
-docker build -t <youruser>/dillinger:${package.json.version} .
-```
-
-This will create the dillinger image and pull in the necessary dependencies.
-Be sure to swap out `${package.json.version}` with the actual
-version of Dillinger.
-
-Once done, run the Docker image and map the port to whatever you wish on
-your host. In this example, we simply map port 8000 of the host to
-port 8080 of the Docker (or whatever port was exposed in the Dockerfile):
-
-```sh
-docker run -d -p 8000:8080 --restart=always --cap-add=SYS_ADMIN --name=dillinger <youruser>/dillinger:${package.json.version}
-```
-
-> Note: `--capt-add=SYS-ADMIN` is required for PDF rendering.
-
-Verify the deployment by navigating to your server address in
-your preferred browser.
-
-```sh
-127.0.0.1:8000
-```
 
 ## License
 
 MIT
 
-**AbdAlmassry**
+_Thank you! , Ever_ **AbdAlmassry**
