@@ -31,7 +31,7 @@ eg, a musical family game will belong to Music, Game, Family genres.
 ![Column List](images/3.png)
 
 Looks like there are missing values in "Rating", "Type", "Content Rating" and "Android Ver". But most of these missing values in Rating column.
-![Column List](images/4.png)
+![Column List 2](images/4.png)
 
 ### Data Cleaning and Creating Dummy Variables
 There are two strategies to handle missing data, either removing records with these missing values or replacing missing values with a specific value like (mean, median or mode) value of the column
@@ -94,4 +94,5 @@ we can see in above plot the most common factor between the lowessly rating apps
 MIT
 
 _Thank you! ,_ 
+
 **AbdAlmassry**
